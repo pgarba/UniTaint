@@ -361,3 +361,147 @@ rax = S_14;
 r8 = S_13;
 
 
+# Compile and optimize with Clang and O3
+
+#include <stdio.h>
+#include <stdint.h>
+
+	uint64_t rax;
+	uint64_t rbx;
+	uint64_t rcx;	
+	uint64_t rdx;
+	uint64_t rbp;
+	uint64_t rsp;
+	uint64_t rsi;
+	uint64_t rdi;
+	uint64_t r8;
+	uint64_t r9;
+	uint64_t r10;
+	uint64_t r11;
+	uint64_t r12;
+	uint64_t r13;
+	uint64_t r14;
+	uint64_t r15;
+
+__declspec(dllexport) void RXor() {
+uint64_t S_0;
+uint64_t S_1;
+uint64_t S_2;
+uint64_t S_3;
+uint64_t S_4;
+uint64_t S_5;
+uint64_t S_6;
+uint64_t S_7;
+uint64_t S_8;
+uint64_t S_9;
+uint64_t S_10;
+uint64_t S_11;
+uint64_t S_12;
+uint64_t S_13;
+uint64_t S_14;
+uint64_t S_15;
+
+S_0 = r8;
+S_1 = rcx;
+S_2 = rdx;
+rbx = S_2;
+S_3 = rbx;
+rbx = S_1;
+S_4 = rbx;
+rbx = S_0;
+S_5 = rbx;
+r15 = S_3;
+S_6 = r15;
+r15 = S_3;
+S_7 = r15;
+r10 = S_7;
+r15 = S_6;
+r10 = ~r10;
+r15 = ~r15;
+r10 = r10 & r15;
+S_6 = r10;
+r15 = S_4;
+S_7 = r15;
+r15 = S_4;
+S_8 = r15;
+r11 = S_8;
+rdx = S_7;
+r11 = ~r11;
+rdx = ~rdx;
+r11 = r11 | rdx;
+S_7 = r11;
+r10 = S_7;
+r15 = S_6;
+r10 = ~r10;
+r15 = ~r15;
+r10 = r10 & r15;
+S_6 = r10;
+r15 = S_3;
+S_7 = r15;
+r15 = S_4;
+S_8 = r15;
+r10 = S_8;
+r15 = S_7;
+r10 = ~r10;
+r15 = ~r15;
+r10 = r10 & r15;
+S_7 = r10;
+r10 = S_7;
+r15 = S_6;
+r10 = ~r10;
+r15 = ~r15;
+r10 = r10 & r15;
+S_6 = r10;
+rbx = S_6;
+S_9 = rbx;
+r15 = S_9;
+S_10 = r15;
+r11 = S_10;
+rsi = rsi + r11;
+S_10 = rsi;
+S_11 = r8;
+rbx = S_10;
+S_12 = rbx;
+r15 = S_5;
+S_13 = r15;
+r15 = S_12;
+S_14 = r15;
+r15 = S_9;
+S_15 = r15;
+r15 = S_3;
+S_1 = r15;
+rdx = S_1;
+rcx = S_15;
+rax = S_14;
+r8 = S_13;
+}
+
+int main() {
+	rcx = 0x1111222200000000;
+	rdx = 0x0000000033334444;
+
+	RXor();
+	printf("RXor: %016llX\n", rax);
+
+	return 0;
+}
+
+
+# Output LLVM IR
+
+; Function Attrs: norecurse nounwind uwtable
+define dso_local void @_Z4RXorv() local_unnamed_addr #0 {
+  %1 = load i64, i64* @rcx, align 8, !tbaa !2
+  %2 = load i64, i64* @rdx, align 8, !tbaa !2
+  %3 = xor i64 %2, %1
+  store i64 %3, i64* @r10, align 8, !tbaa !2
+  store i64 %3, i64* @r11, align 8, !tbaa !2
+  %4 = load i64, i64* @rsi, align 8, !tbaa !2
+  %5 = add i64 %4, %3
+  store i64 %5, i64* @rsi, align 8, !tbaa !2
+  store i64 %5, i64* @rbx, align 8, !tbaa !2
+  store i64 %2, i64* @r15, align 8, !tbaa !2
+  store i64 %2, i64* @rdx, align 8, !tbaa !2
+  store i64 %3, i64* @rcx, align 8, !tbaa !2
+  store i64 %5, i64* @rax, align 8, !tbaa !2
+  ret void
