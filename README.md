@@ -319,7 +319,7 @@ int main() {
 
 	return 0;
 }
-```c
+```
 
 # Output LLVM IR
 
