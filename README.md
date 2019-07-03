@@ -2,7 +2,7 @@
 
 Quick PoC for a taint based attack on VMProtect
 
-Takes a protected x64 binary, traces the vmprotected function with unicorn and taints the input using bea disassembler
+Takes a protected x64 binary, traces the vmprotected function with unicorn and taints the input using bea disassembler and a custom tainter
 
 Tested on simple functions without any branches.
 
@@ -182,6 +182,7 @@ Result (R8)  = 777
 
 # Translated instruction into C code
 
+```c
 uint64_t S_0;
 
 uint64_t S_1;
@@ -359,10 +360,11 @@ rcx = S_15;
 rax = S_14;
 
 r8 = S_13;
-
+´´´
 
 # Compile and optimize with Clang and O3
 
+```c
 #include <stdio.h>
 #include <stdint.h>
 
@@ -485,10 +487,11 @@ int main() {
 
 	return 0;
 }
-
+```c
 
 # Output LLVM IR
 
+```
 ; Function Attrs: norecurse nounwind uwtable
 define dso_local void @_Z4RXorv() local_unnamed_addr #0 {
   %1 = load i64, i64* @rcx, align 8, !tbaa !2
@@ -505,3 +508,4 @@ define dso_local void @_Z4RXorv() local_unnamed_addr #0 {
   store i64 %3, i64* @rcx, align 8, !tbaa !2
   store i64 %5, i64* @rax, align 8, !tbaa !2
   ret void
+```
